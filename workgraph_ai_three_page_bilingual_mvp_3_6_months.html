@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>workgraph.ai | AI Work Intelligence Platform</title>
+  <style>
+    :root{--bg:#0b1220;--card:#fff;--text:#111827;--muted:#64748b;--blue:#2563eb;--green:#059669;--orange:#ea580c;--red:#dc2626;--border:#e2e8f0;--soft:#f8fafc}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}
+    body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans SC","Microsoft YaHei",sans-serif;color:var(--text);background:#f1f5f9;line-height:1.62}
+    .topbar{position:sticky;top:0;z-index:10;background:rgba(255,255,255,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+    .topbar-inner{max-width:1180px;margin:0 auto;padding:12px 22px;display:flex;align-items:center;justify-content:space-between;gap:14px}
+    .brand{font-weight:850;font-size:22px;color:#0f172a;letter-spacing:-.03em}.brand span{color:var(--blue)}
+    .nav{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.nav a,.lang button{border:1px solid var(--border);background:white;color:#1e293b;border-radius:999px;padding:8px 12px;text-decoration:none;font-size:13px;font-weight:700;cursor:pointer}.lang button.active{background:#0f172a;color:white;border-color:#0f172a}
+    .hero{background:linear-gradient(135deg,#0b1220,#1e3a8a 58%,#4c1d95);color:white;padding:72px 7vw 58px}.hero-inner{max-width:1180px;margin:0 auto}
+    h1{font-size:52px;line-height:1.08;margin:0 0 18px;font-weight:900;letter-spacing:-.045em}.hero p{max-width:960px;color:#dbeafe;font-size:20px;margin:0 0 22px}
+    .badges{display:flex;gap:10px;flex-wrap:wrap;margin-top:24px}.badge{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.24);padding:8px 12px;border-radius:999px;font-size:13px;color:#eff6ff;font-weight:700}
+    .wrap{max-width:1180px;margin:0 auto;padding:30px 22px 80px}.page{background:white;border:1px solid var(--border);border-radius:22px;padding:34px;margin:28px 0;box-shadow:0 10px 35px rgba(15,23,42,.055)}
+    .page-title{display:flex;align-items:flex-start;justify-content:space-between;gap:20px;border-bottom:1px solid var(--border);padding-bottom:18px;margin-bottom:22px}.page-number{min-width:84px;text-align:center;background:#eff6ff;color:#1e40af;font-weight:900;border-radius:16px;padding:10px 14px}
+    h2{font-size:34px;line-height:1.2;margin:0 0 10px;letter-spacing:-.03em}h3{font-size:23px;margin:28px 0 12px}h4{font-size:17px;margin:16px 0 8px}.lead{font-size:18px;color:#334155}
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px}.grid-2{display:grid;grid-template-columns:repeat(auto-fit,minmax(330px,1fr));gap:18px}.card{background:var(--soft);border:1px solid var(--border);border-radius:18px;padding:18px}.card h3,.card h4{margin-top:0}
+    .metric{background:linear-gradient(180deg,#fff,#f8fafc);border:1px solid var(--border);border-radius:18px;padding:20px}.metric .num{font-size:28px;font-weight:900;color:#1e40af;letter-spacing:-.03em}.metric .label{font-size:14px;color:#64748b;font-weight:700}
+    .callout{border-left:5px solid var(--blue);background:#eff6ff;padding:16px 18px;border-radius:14px;margin:18px 0}.success{border-left-color:var(--green);background:#ecfdf5}.warning{border-left-color:var(--orange);background:#fff7ed}.danger{border-left-color:var(--red);background:#fef2f2}
+    table{width:100%;border-collapse:collapse;margin:16px 0;font-size:14px}th,td{border:1px solid var(--border);padding:11px 12px;vertical-align:top;text-align:left}th{background:#f8fafc;font-weight:800}tr:nth-child(even) td{background:#fcfcfd}
+    ul,ol{padding-left:22px}li{margin:6px 0}.quote{font-size:22px;font-weight:850;color:#0f172a;background:linear-gradient(90deg,#f8fafc,#eef2ff);border-radius:18px;padding:22px;border:1px solid #dbeafe;margin:20px 0}
+    .diagram{background:#0f172a;color:#e5e7eb;border-radius:18px;padding:22px;overflow-x:auto;font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;font-size:13px;line-height:1.45}
+    .small{font-size:13px;color:#64748b}.en{display:none}body.lang-en .zh{display:none}body.lang-en .en{display:block}body.lang-en table.en{display:table}.inline.en{display:none}body.lang-en .inline.en{display:inline}body.lang-en .zh.inline{display:none}
+    .footer{color:#64748b;text-align:center;padding:28px;font-size:13px}
+    @media(max-width:720px){h1{font-size:38px}.hero p{font-size:17px}.page{padding:22px}.page-title{display:block}.page-number{display:inline-block;margin-bottom:12px}.topbar-inner{align-items:flex-start;flex-direction:column}}
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">workgraph<span>.ai</span></div>
+      <div class="nav">
+        <a href="#page1"><span class="zh inline">第一页：快速了解</span><span class="en inline">Page 1: Overview</span></a>
+        <a href="#page2"><span class="zh inline">第二页：功能</span><span class="en inline">Page 2: Capabilities</span></a>
+        <a href="#page3"><span class="zh inline">第三页：计划</span><span class="en inline">Page 3: Plan</span></a>
+        <span class="lang"><button id="zhBtn" class="active" onclick="setLang('zh')">中文</button><button id="enBtn" onclick="setLang('en')">English</button></span>
+      </div>
+    </div>
+  </div>
+  <div class="hero">
+    <div class="hero-inner">
+      <div class="zh">
+        <h1>workgraph.ai<br/>AI Work Intelligence Platform</h1>
+        <p>面向云桌面与 VM 工作环境的 AI 工作智能平台。第一阶段目标不是做完整企业平台，而是用 4 个开发在 3–6 个月内交付可销售 MVP：工作录屏理解、日报、Workflow Map、SOP 草稿、个人助手雏形和基础算力成本分析。</p>
+        <div class="badges"><span class="badge">3–6 个月 MVP</span><span class="badge">4 个开发</span><span class="badge">AI 编程加速</span><span class="badge">Workflow Graph</span><span class="badge">Personal Work Memory</span><span class="badge">Compute Insight</span></div>
+      </div>
+      <div class="en">
+        <h1>workgraph.ai<br/>AI Work Intelligence Platform</h1>
+        <p>An AI work intelligence platform for cloud desktops and VM environments. The first phase is not a full enterprise platform. The goal is a sellable MVP in 3–6 months with four developers: screen-based work understanding, daily reports, workflow maps, SOP drafts, early personal assistant, and basic compute insight.</p>
+        <div class="badges"><span class="badge">3–6 Month MVP</span><span class="badge">4 Developers</span><span class="badge">AI Coding Acceleration</span><span class="badge">Workflow Graph</span><span class="badge">Personal Work Memory</span><span class="badge">Compute Insight</span></div>
+      </div>
+      <p class="small" style="color:#bfdbfe;margin-top:22px;">Updated: 2026-05-21</p>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <section class="page" id="page1">
+      <div class="page-title"><div><h2 class="zh">第一页：快速了解 workgraph.ai 做什么</h2><h2 class="en">Page 1: What workgraph.ai Does</h2><p class="lead zh">面向客户、投资人、合作伙伴的快速版本。</p><p class="lead en">A quick version for customers, investors, and partners.</p></div><div class="page-number">01</div></div>
+      <div class="zh">
+        <div class="quote">workgraph.ai 不是员工监控软件，而是企业的 AI Work Intelligence Layer：看见真实工作 → 记住隐性知识 → 生成 SOP → 形成 Agent Skill → 优化流程与算力成本。</div>
+        <h3>1. 解决的问题</h3>
+        <div class="grid">
+          <div class="card"><h4>看不见</h4><p>管理者不知道真实工作过程、卡点和返工在哪里。</p></div>
+          <div class="card"><h4>记不住</h4><p>优秀员工的经验存在操作习惯、邮件、表格和系统路径里，离职就流失。</p></div>
+          <div class="card"><h4>自动化不了</h4><p>RPA 要工程师写脚本，通用 AI Agent 又不懂企业流程。</p></div>
+          <div class="card"><h4>算力浪费</h4><p>VM、GPU、AI 推理和存储按峰值配置，但缺乏成本归因。</p></div>
+        </div>
+        <h3>2. 产品一句话</h3>
+        <p><strong>workgraph.ai</strong> 通过云桌面/VM 中的屏幕流、窗口事件、App/URL、邮件、共享文件和资源指标，自动生成项目进展、事件链、流程图、SOP 草稿、个人工作记忆和算力成本洞察。</p>
+        <h3>3. 三层价值</h3>
+        <div class="diagram">L1 感知层：录屏 + OCR/VLM + WorkEvent
+    ↓
+L2 知识层：个人助手 + 企业知识图谱 + 项目记忆
+    ↓
+L3 执行层：SOP → Skill → Agent 执行（后续版本逐步推进）
+    ↓
+L0 基础设施层：VM / GPU / AI 推理 / 存储成本洞察</div>
+        <h3>4. 第一阶段销售表达</h3>
+        <div class="callout success">理解工作，而不只是记录活动。workgraph.ai 将云桌面中的真实工作过程转化为日报、项目进展、流程洞察、SOP 草稿和自动化机会。</div>
+      </div>
+      <div class="en">
+        <div class="quote">workgraph.ai is not employee monitoring software. It is an AI Work Intelligence Layer: observe real work → capture hidden knowledge → generate SOPs → create agent skills → optimize workflow and compute cost.</div>
+        <h3>1. Problems We Solve</h3>
+        <div class="grid">
+          <div class="card"><h4>Work is invisible</h4><p>Managers do not see the real work path, bottlenecks, or rework.</p></div>
+          <div class="card"><h4>Knowledge is lost</h4><p>Expert knowledge lives in habits, emails, spreadsheets, and system paths.</p></div>
+          <div class="card"><h4>Automation is hard</h4><p>RPA requires engineers; generic AI agents lack enterprise workflow context.</p></div>
+          <div class="card"><h4>Compute is wasted</h4><p>VMs, GPUs, inference, and storage are provisioned for peaks without clear cost attribution.</p></div>
+        </div>
+        <h3>2. One-Sentence Product Description</h3>
+        <p><strong>workgraph.ai</strong> analyzes screen streams, window events, App/URL data, emails, shared files, and resource metrics from cloud desktops or VMs to generate project progress, event chains, workflow maps, SOP drafts, personal work memory, and compute cost insights.</p>
+        <h3>3. Three Layers of Value</h3>
+        <div class="diagram">L1 Sensing: recording + OCR/VLM + WorkEvent
+    ↓
+L2 Knowledge: personal assistant + enterprise knowledge graph + project memory
+    ↓
+L3 Action: SOP → Skill → Agent execution, delivered gradually in later versions
+    ↓
+L0 Infrastructure: VM / GPU / AI inference / storage cost insight</div>
+        <h3>4. First-Phase Sales Message</h3>
+        <div class="callout success">Understand work, not just activity. workgraph.ai turns cloud desktop activity into daily reports, project progress, workflow insights, SOP drafts, and automation opportunities.</div>
+      </div>
+    </section>
+
+    <section class="page" id="page2">
+      <div class="page-title"><div><h2 class="zh">第二页：具体功能与 MVP 范围</h2><h2 class="en">Page 2: Capabilities and MVP Scope</h2><p class="lead zh">这一页定义 3–6 个月内必须做出来的东西，以及哪些先不做。</p><p class="lead en">This page defines what must be built in 3–6 months and what should be deferred.</p></div><div class="page-number">02</div></div>
+      <div class="zh">
+        <h3>1. MVP 必做功能</h3>
+        <table>
+          <tr><th>模块</th><th>3 个月版本</th><th>6 个月版本</th></tr>
+          <tr><td>录屏与时间线</td><td>稳定录屏、关键帧、按天/用户查看</td><td>事件触发采样、视频片段索引、保留策略</td></tr>
+          <tr><td>WorkEvent 抽取</td><td>OCR + App/URL + 窗口标题生成事件摘要</td><td>项目/客户/订单/工单归因，事件链生成</td></tr>
+          <tr><td>AI 日报/周报</td><td>个人日报、团队摘要、工作分类</td><td>项目周报、风险/阻塞、未完成事项</td></tr>
+          <tr><td>Workflow Map</td><td>单人任务路径可视化</td><td>多人流程聚类、variant analysis、瓶颈识别</td></tr>
+          <tr><td>SOP 草稿</td><td>从一段流程生成操作步骤</td><td>从多次优秀操作生成可审核 SOP 模板</td></tr>
+          <tr><td>个人助手雏形</td><td>查询当天/最近工作摘要</td><td>基于个人历史、邮件/文件索引回答“我做过什么、资料在哪”</td></tr>
+          <tr><td>管理看板</td><td>团队时间、项目分布、活动摘要</td><td>流程瓶颈、异常热力图、自动化候选清单</td></tr>
+          <tr><td>算力洞察</td><td>VM idle、资源使用趋势</td><td>基础 VM sizing 建议、AI 分析成本估算</td></tr>
+        </table>
+        <h3>2. MVP 暂不做 / 只做设计</h3>
+        <div class="grid">
+          <div class="card"><h4>完整 Agent 执行</h4><p>先不承诺自动执行复杂业务，只做 SOP、推荐和低风险草稿。</p></div>
+          <div class="card"><h4>Skill Marketplace</h4><p>先设计数据结构，等有 5–10 个稳定 Skill 再做 marketplace。</p></div>
+          <div class="card"><h4>全连接器矩阵</h4><p>先做 1–2 个：Gmail/Outlook 或 Google Drive/SharePoint，按客户需求扩展。</p></div>
+          <div class="card"><h4>完整合规认证</h4><p>先做合规设计和审计日志，不在 MVP 阶段追求完整 SOC2/ISO。</p></div>
+        </div>
+        <h3>3. 技术架构</h3>
+        <div class="diagram">VM Agent / Recorder
+  → Keyframes + App/URL + Window Title + OCR
+  → WorkEvent Service
+  → LLM Summary Service
+  → Workflow Graph Service
+  → SOP Generator
+  → Dashboard + Personal Assistant
+  → Compute Insight</div>
+        <h3>4. 四个开发角色分工</h3>
+        <table>
+          <tr><th>角色</th><th>主要负责</th><th>AI 编程加速方式</th></tr>
+          <tr><td>Developer 1：Backend / Platform</td><td>用户、组织、项目、录屏 metadata、API、权限、队列</td><td>用 AI 生成 CRUD/API/测试/迁移脚本</td></tr>
+          <tr><td>Developer 2：AI / Data Pipeline</td><td>OCR/VLM、WorkEvent、摘要、SOP 生成、embedding</td><td>用 AI 快速迭代 prompt、schema、evaluation scripts</td></tr>
+          <tr><td>Developer 3：Frontend / Dashboard</td><td>时间线、日报、workflow map、管理看板、个人助手 UI</td><td>用 AI 生成 React components、charts、页面布局</td></tr>
+          <tr><td>Developer 4：Infra / VM / Capture</td><td>录屏 agent、视频存储、keyframe、资源指标、部署脚本</td><td>用 AI 生成 agent wrapper、monitoring scripts、deployment automation</td></tr>
+        </table>
+      </div>
+      <div class="en">
+        <h3>1. Must-Have MVP Capabilities</h3>
+        <table>
+          <tr><th>Module</th><th>3-Month Version</th><th>6-Month Version</th></tr>
+          <tr><td>Recording & Timeline</td><td>Stable recording, keyframes, daily/user view</td><td>Event-triggered sampling, indexed video clips, retention policy</td></tr>
+          <tr><td>WorkEvent Extraction</td><td>OCR + App/URL + window title to event summaries</td><td>Project/customer/order/ticket attribution and event chains</td></tr>
+          <tr><td>AI Daily/Weekly Reports</td><td>Personal daily reports, team summaries, work categories</td><td>Project weekly reports, risks/blockers, open items</td></tr>
+          <tr><td>Workflow Map</td><td>Single-user task path visualization</td><td>Multi-user workflow clustering, variant analysis, bottleneck detection</td></tr>
+          <tr><td>SOP Drafts</td><td>Generate steps from one workflow segment</td><td>Generate reviewable SOP templates from repeated expert workflows</td></tr>
+          <tr><td>Early Personal Assistant</td><td>Ask about today/recent work summaries</td><td>Answer “what did I do and where are the materials?” using personal history and files</td></tr>
+          <tr><td>Manager Dashboard</td><td>Team time, project distribution, activity summary</td><td>Bottlenecks, exception heatmap, automation candidates</td></tr>
+          <tr><td>Compute Insight</td><td>VM idle and resource trends</td><td>Basic VM sizing recommendations and AI analysis cost estimation</td></tr>
+        </table>
+        <h3>2. Deferred from MVP</h3>
+        <div class="grid">
+          <div class="card"><h4>Full Agent Execution</h4><p>No complex autonomous execution yet. Start with SOPs, recommendations, and low-risk drafts.</p></div>
+          <div class="card"><h4>Skill Marketplace</h4><p>Design the data model first. Build marketplace only after 5–10 reliable skills exist.</p></div>
+          <div class="card"><h4>Full Connector Matrix</h4><p>Start with 1–2 connectors: Gmail/Outlook or Google Drive/SharePoint, then expand per customer demand.</p></div>
+          <div class="card"><h4>Full Certifications</h4><p>Build compliance design and audit logs first; do not chase full SOC2/ISO in MVP.</p></div>
+        </div>
+        <h3>3. Technical Architecture</h3>
+        <div class="diagram">VM Agent / Recorder
+  → Keyframes + App/URL + Window Title + OCR
+  → WorkEvent Service
+  → LLM Summary Service
+  → Workflow Graph Service
+  → SOP Generator
+  → Dashboard + Personal Assistant
+  → Compute Insight</div>
+        <h3>4. Four-Developer Team Split</h3>
+        <table>
+          <tr><th>Role</th><th>Primary Ownership</th><th>AI Coding Acceleration</th></tr>
+          <tr><td>Developer 1: Backend / Platform</td><td>Users, orgs, projects, recording metadata, APIs, permissions, queues</td><td>Generate CRUD/API/tests/migrations with AI</td></tr>
+          <tr><td>Developer 2: AI / Data Pipeline</td><td>OCR/VLM, WorkEvent, summaries, SOP generation, embeddings</td><td>Rapidly iterate prompts, schemas, and evaluation scripts</td></tr>
+          <tr><td>Developer 3: Frontend / Dashboard</td><td>Timeline, reports, workflow map, manager dashboard, personal assistant UI</td><td>Generate React components, charts, and layouts with AI</td></tr>
+          <tr><td>Developer 4: Infra / VM / Capture</td><td>Recording agent, video storage, keyframes, resource metrics, deployment scripts</td><td>Generate agent wrappers, monitoring scripts, and deployment automation</td></tr>
+        </table>
+      </div>
+    </section>
+
+    <section class="page" id="page3">
+      <div class="page-title"><div><h2 class="zh">第三页：3–6 个月开发计划、成本与市场推广</h2><h2 class="en">Page 3: 3–6 Month Plan, Cost, and GTM</h2><p class="lead zh">按 4 个开发、AI 编程加速、客户需求滚动规划重写。</p><p class="lead en">Rewritten for four developers, AI coding acceleration, and customer-demand-driven planning.</p></div><div class="page-number">03</div></div>
+      <div class="zh">
+        <h3>1. 新开发原则</h3>
+        <div class="callout success"><strong>核心原则：</strong>不做 18 个月大平台计划。先用 3–6 个月做出可演示、可试点、可销售 MVP。后续功能根据真实客户需求重新排期。</div>
+        <ul>
+          <li>只做第一批客户最能理解、最愿意付费的功能。</li>
+          <li>所有功能必须围绕真实工作流程 demo，而不是平台愿景。</li>
+          <li>用 AI 编程生成大量前后端基础代码、测试、文档和脚本。</li>
+          <li>暂缓 marketplace、完整 agent execution、大规模连接器矩阵。</li>
+          <li>每 2 周交付一次可演示版本。</li>
+        </ul>
+        <h3>2. 3–6 个月 Sprint 计划</h3>
+        <table>
+          <tr><th>时间</th><th>目标</th><th>交付物</th></tr>
+          <tr><td>第 1–2 周</td><td>产品底座冻结</td><td>数据模型、WorkEvent schema、用户/项目/组织、录屏 metadata、基础 UI 框架</td></tr>
+          <tr><td>第 3–4 周</td><td>录屏时间线 + OCR</td><td>按用户/日期查看视频片段、关键帧、OCR 文本、App/URL/窗口标题</td></tr>
+          <tr><td>第 5–6 周</td><td>AI 日报 MVP</td><td>个人日报、团队摘要、任务分类、可编辑日报</td></tr>
+          <tr><td>第 7–8 周</td><td>WorkEvent + 项目归因</td><td>事件链、项目/客户/订单/工单标签、搜索和过滤</td></tr>
+          <tr><td>第 9–10 周</td><td>Workflow Map MVP</td><td>单人流程图、重复步骤、系统切换、耗时节点</td></tr>
+          <tr><td>第 11–12 周</td><td>SOP 草稿 + 第一个客户 demo</td><td>从流程片段生成 SOP、客户场景 demo、试点部署包</td></tr>
+          <tr><td>第 13–18 周</td><td>增强版 MVP</td><td>多人流程聚类、manager dashboard、基础个人助手、1 个连接器</td></tr>
+          <tr><td>第 19–24 周</td><td>销售版 V1</td><td>隐私策略、审计日志、VM idle dashboard、报价包、2–3 个行业 demo</td></tr>
+        </table>
+        <h3>3. 人员与成本</h3>
+        <div class="grid">
+          <div class="metric"><div class="num">4</div><div class="label">核心开发人数</div></div>
+          <div class="metric"><div class="num">3–6 个月</div><div class="label">MVP 到销售版 V1 周期</div></div>
+          <div class="metric"><div class="num">$120K–$280K</div><div class="label">研发现金成本区间，取决于薪资和外包比例</div></div>
+          <div class="metric"><div class="num">2 周</div><div class="label">每轮可演示迭代</div></div>
+        </div>
+        <table>
+          <tr><th>项目</th><th>3 个月</th><th>6 个月</th></tr>
+          <tr><td>4 个开发人力</td><td>$80K–$140K</td><td>$160K–$280K</td></tr>
+          <tr><td>LLM / OCR / 实验算力</td><td>$5K–$15K</td><td>$15K–$35K</td></tr>
+          <tr><td>服务器 / 存储 / 测试环境</td><td>$5K–$15K</td><td>$15K–$30K</td></tr>
+          <tr><td>UI/设计/文档临时支持</td><td>$5K–$20K</td><td>$10K–$30K</td></tr>
+          <tr><td>合计</td><td>$95K–$190K</td><td>$200K–$375K</td></tr>
+        </table>
+        <h3>4. 市场推广与试点策略</h3>
+        <div class="grid-2">
+          <div class="card"><h4>首批客户</h4><p>选 1–3 个最愿意试点的物流 back-office、BPO、客服或财务后台客户。</p></div>
+          <div class="card"><h4>Demo 场景</h4><p>不要泛泛展示 dashboard。用真实流程：客户异常处理、billing 对账、EDI failure、发票处理。</p></div>
+          <div class="card"><h4>试点周期</h4><p>2–4 周试点，20–50 个用户，目标是证明日报节省、流程可视化、SOP 生成和管理洞察。</p></div>
+          <div class="card"><h4>付费方式</h4><p>PoC setup fee + 小规模月费。不要一开始追求大合同，先拿真实数据和案例。</p></div>
+        </div>
+        <h3>5. 第一阶段定价</h3>
+        <table>
+          <tr><th>版本</th><th>价格建议</th><th>说明</th></tr>
+          <tr><td>Pilot Package</td><td>$5K–$20K / 试点</td><td>2–4 周，20–50 用户，含部署和定制 demo</td></tr>
+          <tr><td>Work Insight MVP</td><td>$12–$20/user/month</td><td>录屏、日报、App/URL、基础 dashboard</td></tr>
+          <tr><td>Workflow Pro</td><td>$25–$45/user/month</td><td>事件链、workflow map、SOP 草稿、manager insight</td></tr>
+          <tr><td>Private Deployment</td><td>项目制</td><td>结合 VM/硬件/私有化部署另行报价</td></tr>
+        </table>
+        <h3>6. 后续需求再规划</h3>
+        <div class="callout warning">后续 6 个月以后是否做完整知识图谱、更多连接器、Agent 执行、Marketplace、合规认证，不在当前版本里承诺。等试点客户反馈和付费意愿明确后，再重新做二期路线图。</div>
+      </div>
+      <div class="en">
+        <h3>1. New Development Principles</h3>
+        <div class="callout success"><strong>Core principle:</strong> Do not build an 18-month platform now. Build a demoable, pilot-ready, sellable MVP in 3–6 months. Plan future features based on real customer demand.</div>
+        <ul>
+          <li>Build only what first customers can understand and pay for.</li>
+          <li>Every feature must support a real workflow demo, not just a platform vision.</li>
+          <li>Use AI coding to generate foundational frontend/backend code, tests, docs, and scripts.</li>
+          <li>Defer marketplace, full agent execution, and a broad connector matrix.</li>
+          <li>Deliver a demoable build every two weeks.</li>
+        </ul>
+        <h3>2. 3–6 Month Sprint Plan</h3>
+        <table>
+          <tr><th>Timeline</th><th>Goal</th><th>Deliverables</th></tr>
+          <tr><td>Weeks 1–2</td><td>Freeze product foundation</td><td>Data model, WorkEvent schema, users/projects/orgs, recording metadata, base UI framework</td></tr>
+          <tr><td>Weeks 3–4</td><td>Recording timeline + OCR</td><td>User/date video clips, keyframes, OCR text, App/URL/window title</td></tr>
+          <tr><td>Weeks 5–6</td><td>AI daily report MVP</td><td>Personal daily report, team summary, task categories, editable report</td></tr>
+          <tr><td>Weeks 7–8</td><td>WorkEvent + project attribution</td><td>Event chains, project/customer/order/ticket tags, search and filters</td></tr>
+          <tr><td>Weeks 9–10</td><td>Workflow Map MVP</td><td>Single-user workflow map, repeated steps, system switches, time nodes</td></tr>
+          <tr><td>Weeks 11–12</td><td>SOP draft + first customer demo</td><td>SOP from workflow segments, customer demo, pilot deployment package</td></tr>
+          <tr><td>Weeks 13–18</td><td>Enhanced MVP</td><td>Multi-user clustering, manager dashboard, basic personal assistant, one connector</td></tr>
+          <tr><td>Weeks 19–24</td><td>Sales-ready V1</td><td>Privacy policy, audit logs, VM idle dashboard, pricing package, 2–3 industry demos</td></tr>
+        </table>
+        <h3>3. Team and Cost</h3>
+        <div class="grid">
+          <div class="metric"><div class="num">4</div><div class="label">Core developers</div></div>
+          <div class="metric"><div class="num">3–6 months</div><div class="label">MVP to sales-ready V1</div></div>
+          <div class="metric"><div class="num">$120K–$280K</div><div class="label">R&D cash cost range depending on salary and outsourcing mix</div></div>
+          <div class="metric"><div class="num">2 weeks</div><div class="label">Demoable iteration cycle</div></div>
+        </div>
+        <table>
+          <tr><th>Item</th><th>3 Months</th><th>6 Months</th></tr>
+          <tr><td>4 developer labor</td><td>$80K–$140K</td><td>$160K–$280K</td></tr>
+          <tr><td>LLM / OCR / experiment compute</td><td>$5K–$15K</td><td>$15K–$35K</td></tr>
+          <tr><td>Server / storage / test environment</td><td>$5K–$15K</td><td>$15K–$30K</td></tr>
+          <tr><td>Temporary UI/design/docs support</td><td>$5K–$20K</td><td>$10K–$30K</td></tr>
+          <tr><td>Total</td><td>$95K–$190K</td><td>$200K–$375K</td></tr>
+        </table>
+        <h3>4. GTM and Pilot Strategy</h3>
+        <div class="grid-2">
+          <div class="card"><h4>First Customers</h4><p>Select 1–3 pilot-friendly logistics back-office, BPO, support, or finance operations customers.</p></div>
+          <div class="card"><h4>Demo Scenarios</h4><p>Do not show generic dashboards. Use real workflows: customer exception handling, billing reconciliation, EDI failure, invoice processing.</p></div>
+          <div class="card"><h4>Pilot Cycle</h4><p>2–4 week pilot, 20–50 users, proving daily report savings, workflow visibility, SOP generation, and management insight.</p></div>
+          <div class="card"><h4>Commercial Model</h4><p>PoC setup fee + small monthly subscription. Do not chase a large contract first; get real data and case studies.</p></div>
+        </div>
+        <h3>5. First-Phase Pricing</h3>
+        <table>
+          <tr><th>Version</th><th>Suggested Price</th><th>Notes</th></tr>
+          <tr><td>Pilot Package</td><td>$5K–$20K / pilot</td><td>2–4 weeks, 20–50 users, includes deployment and custom demo</td></tr>
+          <tr><td>Work Insight MVP</td><td>$12–$20/user/month</td><td>Recording, daily report, App/URL, basic dashboard</td></tr>
+          <tr><td>Workflow Pro</td><td>$25–$45/user/month</td><td>Event chains, workflow map, SOP drafts, manager insight</td></tr>
+          <tr><td>Private Deployment</td><td>Project-based</td><td>Quoted separately with VM/hardware/private deployment</td></tr>
+        </table>
+        <h3>6. Replan Future Demand Later</h3>
+        <div class="callout warning">Do not commit now to full knowledge graph, more connectors, agent execution, marketplace, or formal certifications after month 6. Replan Phase 2 after pilot feedback and confirmed willingness to pay.</div>
+      </div>
+    </section>
+    <div class="footer">workgraph.ai · AI Work Intelligence Platform · 3–6 Month MVP Plan · Bilingual</div>
+  </div>
+  <script>
+    function setLang(lang){
+      if(lang==='en'){document.body.classList.add('lang-en');document.documentElement.lang='en';document.getElementById('enBtn').classList.add('active');document.getElementById('zhBtn').classList.remove('active');}
+      else{document.body.classList.remove('lang-en');document.documentElement.lang='zh-CN';document.getElementById('zhBtn').classList.add('active');document.getElementById('enBtn').classList.remove('active');}
+    }
+  </script>
+</body>
+</html>
